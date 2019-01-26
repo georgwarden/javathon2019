@@ -7,7 +7,7 @@ import ru.mai.pubstash.util.Result;
 
 public interface PartyInteractor {
 
-     Result<Party> createParty(String name) ;
+     Result<Party> createParty(Party party) ;
 
      Result<Member> addParticipant(long participantId, long partyId);
 

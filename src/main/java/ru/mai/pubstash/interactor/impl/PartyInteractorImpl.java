@@ -1,5 +1,6 @@
 package ru.mai.pubstash.interactor.impl;
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +38,13 @@ public class PartyInteractorImpl implements PartyInteractor {
     }
 
     @Override
-    public Result<Party> createParty(@NonNull final String name) {
-        Party party = new Party();
-        party.setName(name);
-        try {
-            party = partyRepository.saveAndFlush(party);
-        } catch (RuntimeException e) {
-            LOGGER.error("exception: ", e);
-            return Result.fail();
-        }
-        return Result.success(party);
+    public Result<Party> createParty(final Party party) {
+        return Result.retrieve(() -> {
+            Preconditions.checkArgument(party != null && !party.getName().isEmpty());
+            return partyRepository.saveAndFlush(party);
+        });
     }
+
 
     @Override
     public Result<Member> addParticipant(long participantId, long partyId) {

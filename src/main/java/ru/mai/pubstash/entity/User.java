@@ -16,7 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "NICKNAME", length=100, nullable = false)
+    @Column(name = "NICKNAME", length=100, nullable = false, unique = true)
     private String nickname;
 
     @OneToMany(mappedBy="user")

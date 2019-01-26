@@ -1,40 +1,48 @@
 package ru.mai.pubstash.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import ru.mai.pubstash.dto.*;
 import ru.mai.pubstash.entity.Member;
+import ru.mai.pubstash.entity.Party;
 import ru.mai.pubstash.interactor.PartyInteractor;
 
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/party")
 public class PartyController {
 
-    private PartyInteractor interactor;
+    private final PartyInteractor partyInteractor;
 
-    public PartyController(PartyInteractor interactor) {
-        this.interactor = interactor;
+    @Autowired
+    public PartyController(final PartyInteractor partyInteractor) {
+        this.partyInteractor = partyInteractor;
     }
 
-    @PostMapping("/create_party")
+    @PostMapping("/create")
     public Mono<ResponseEntity> createParty(CreatePartyRequest request) {
+        Party party = new Party();
+        party.setName(request.getPartyName());
+        party.setDescription(request.getDescription());
         return Mono.fromCallable(() ->
-                interactor.createParty(request.getPartyName())
+                partyInteractor.createParty(party)
                         .fold(
                                 (v) -> ResponseEntity.ok().build(),
-                                () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
+                                ()  -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                         ));
     }
 
     @PostMapping("/add_participant")
     public Mono<ResponseEntity> addParticipant(AddParticipantRequest request) {
         return Mono.fromCallable(() ->
-                interactor.addParticipant(request.getParticipantId(), request.getPartyId())
+                partyInteractor.addParticipant(request.getParticipantId(), request.getPartyId())
                         .fold(
                                 (v) -> ResponseEntity.ok().build(),
                                 () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
@@ -44,7 +52,7 @@ public class PartyController {
     @PostMapping("/remove_participant")
     public Mono<ResponseEntity> removeParticipant(RemoveParticipantRequest request) {
         return Mono.fromCallable(() ->
-                interactor.removeParticipant(request.getParticipantId(), request.getPartyId())
+                partyInteractor.removeParticipant(request.getParticipantId(), request.getPartyId())
                         .fold(
                                 (v) -> ResponseEntity.ok().build(),
                                 () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
@@ -53,7 +61,7 @@ public class PartyController {
 
     @GetMapping("/get_party")
     public Mono<ResponseEntity<GetPartyResponse>> getParty(GetPartyRequest request) {
-        return Mono.fromCallable(() -> interactor.getParty(request.getId())
+        return Mono.fromCallable(() -> partyInteractor.getParty(request.getId())
                 .fold(
                         (party) -> {
                             GetPartyResponse response = new GetPartyResponse();
