@@ -16,6 +16,15 @@ public interface Result<T> {
         return new Failure<>();
     }
 
+    static <T> Result<T> retrieve(CatchingSupplier<T> from) {
+        try {
+            T result = from.get();
+            return Result.success(result);
+        } catch (Throwable e) {
+            return Result.fail();
+        }
+    }
+
 }
 
 class Success<T> implements Result<T> {
