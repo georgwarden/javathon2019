@@ -3,10 +3,7 @@ package ru.mai.pubstash.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.mai.pubstash.dto.*;
 import ru.mai.pubstash.entity.Member;
@@ -27,7 +24,7 @@ public class PartyController {
     }
 
     @PostMapping("/create")
-    public Mono<ResponseEntity> createParty(CreatePartyRequest request) {
+    public Mono<ResponseEntity> createParty(@RequestBody CreatePartyRequest request) {
         Party party = new Party();
         party.setName(request.getPartyName());
         party.setDescription(request.getDescription());
@@ -40,7 +37,7 @@ public class PartyController {
     }
 
     @PostMapping("/add_participant")
-    public Mono<ResponseEntity> addParticipant(AddParticipantRequest request) {
+    public Mono<ResponseEntity> addParticipant(@RequestBody AddParticipantRequest request) {
         return Mono.fromCallable(() ->
                 partyInteractor.addParticipant(request.getParticipantId(), request.getPartyId())
                         .fold(
@@ -50,7 +47,7 @@ public class PartyController {
     }
 
     @PostMapping("/remove_participant")
-    public Mono<ResponseEntity> removeParticipant(RemoveParticipantRequest request) {
+    public Mono<ResponseEntity> removeParticipant(@RequestBody RemoveParticipantRequest request) {
         return Mono.fromCallable(() ->
                 partyInteractor.removeParticipant(request.getParticipantId(), request.getPartyId())
                         .fold(
@@ -60,7 +57,7 @@ public class PartyController {
     }
 
     @GetMapping("/get_party")
-    public Mono<ResponseEntity<GetPartyResponse>> getParty(GetPartyRequest request) {
+    public Mono<ResponseEntity<GetPartyResponse>> getParty(@RequestBody GetPartyRequest request) {
         return Mono.fromCallable(() -> partyInteractor.getParty(request.getId())
                 .fold(
                         (party) -> {
