@@ -10,6 +10,8 @@ import ru.mai.pubstash.interactor.PartyInteractor;
 import ru.mai.pubstash.repository.PartyRepository;
 import ru.mai.pubstash.util.Result;
 
+import java.util.Optional;
+
 @Service
 public class PartyInteractorImpl implements PartyInteractor {
 
@@ -17,7 +19,7 @@ public class PartyInteractorImpl implements PartyInteractor {
     private final PartyRepository partyRepository;
 
     @Autowired
-    public PartyInteractorImpl(PartyRepository partyRepository){
+    public PartyInteractorImpl(PartyRepository partyRepository) {
         this.partyRepository = partyRepository;
     }
 
