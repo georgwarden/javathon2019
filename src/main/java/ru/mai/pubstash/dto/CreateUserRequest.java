@@ -6,12 +6,14 @@ import java.math.BigInteger;
 
 public class CreateUserRequest {
 
-    @JsonProperty("nickname")
     private String nickname;
-
-    @JsonProperty("cardNumber")
     private BigInteger cardNumber;
+    public CreateUserRequest(){}
 
+    public CreateUserRequest(String nickname, BigInteger cardNumber) {
+        this.nickname = nickname;
+        this.cardNumber = cardNumber;
+    }
 
     public String getNickname() {
         return nickname;
