@@ -1,19 +1,14 @@
 package ru.mai.pubstash.interactor;
 
+import ru.mai.pubstash.entity.Party;
 import ru.mai.pubstash.util.Result;
 
-public class PartyInteractor {
 
-    public Result<Void> createParty(String name) {
-        return Result.success(null);
-    }
+public interface PartyInteractor {
 
-    public Result<Void> addParticipant(long participantId, long partyId) {
-        return Result.success(null);
-    }
+     Result<Party> createParty(String name) ;
 
-    public Result<Void> removeParticipant(long participantId, long partyId) {
-        return Result.success(null);
-    }
+     Result<Void> addParticipant(long participantId, long partyId);
 
+     Result<Void> removeParticipant(long participantId, long partyId);
 }
