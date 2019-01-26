@@ -8,4 +8,6 @@ import ru.mai.pubstash.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findUserByNickname(String nickname);
+    User findUserById(long id);
 }
