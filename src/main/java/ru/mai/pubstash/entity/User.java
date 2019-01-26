@@ -2,6 +2,7 @@ package ru.mai.pubstash.entity;
 
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,12 @@ public class User {
 
     @OneToMany(mappedBy="user")
     private List<Member> members;
+
+    @Column(name = "BALANCE")
+    private double balance;
+
+    @Column(name = "CARD")
+    private BigInteger cardNumber;
 
     public long getId() {
         return id;
@@ -43,6 +50,22 @@ public class User {
 
     public void setMembers(List<Member> members) {
         this.members = members;
+    }
+
+    public BigInteger getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(BigInteger cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     @Override
