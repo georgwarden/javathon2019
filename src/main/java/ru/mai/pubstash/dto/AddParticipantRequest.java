@@ -4,14 +4,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AddParticipantRequest {
 
-    @JsonProperty("id")
-    private long id;
+    @JsonProperty("party_id")
+    private long partyId;
 
-    public long getId() {
-        return id;
+    @JsonProperty("participant_id")
+    private long participantId;
+
+    public long getParticipantId() {
+        return participantId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setParticipantId(long participantId) {
+        this.participantId = participantId;
+    }
+
+    public long getPartyId() {
+        return partyId;
+    }
+
+    public void setPartyId(long partyId) {
+        this.partyId = partyId;
     }
 }
