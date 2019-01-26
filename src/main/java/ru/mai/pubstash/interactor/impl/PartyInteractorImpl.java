@@ -48,10 +48,11 @@ public class PartyInteractorImpl implements PartyInteractor {
 
     @Override
     public Result<Member> addParticipant(long participantId, long partyId) {
-        Member newMember = new Member();
         Optional<User> user = userRepository.findById(participantId);
         Optional<Party> party = partyRepository.findById(partyId);
         if (user.isPresent() && party.isPresent()) {
+            Member newMember = new Member();
+            newMember.setCost(0);
             newMember.setUser(user.get());
             newMember.setParty(party.get());
             return Result.retrieve(() -> memberRepository.saveAndFlush(newMember));
