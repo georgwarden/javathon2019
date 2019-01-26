@@ -28,15 +28,16 @@ public class PartyController {
 
     @PostMapping("/create")
     public Mono<ResponseEntity> createParty(CreatePartyRequest request) {
-        Party party = new Party();
-        party.setName(request.getPartyName());
-        party.setDescription(request.getDescription());
-        return Mono.fromCallable(() ->
-                partyInteractor.createParty(party)
-                        .fold(
-                                (v) -> ResponseEntity.ok().build(),
-                                ()  -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
-                        ));
+        return Mono.fromCallable(() -> {
+            Party party = new Party();
+            party.setName(request.getPartyName());
+            party.setDescription(request.getDescription());
+            return partyInteractor.createParty(party)
+                    .fold(
+                            (v) -> ResponseEntity.ok().build(),
+                            () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
+                    );
+        });
     }
 
     @PostMapping("/add_participant")
@@ -73,7 +74,9 @@ public class PartyController {
                                             .map((user) -> {
                                                 UserDto userDto = new UserDto();
                                                 userDto.setId(user.getId());
-                                                userDto.setName(user.getNickname());
+                                                userDto.setNickname(user.getNickname());
+                                                userDto.setCardNumber(user.getCardNumber().toString());
+                                                userDto.setBalance(user.getBalance());
                                                 return userDto;
                                             })
                                             .collect(Collectors.toList())

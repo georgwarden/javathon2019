@@ -2,13 +2,19 @@ package ru.mai.pubstash.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserDto {
 
+public class UserDto {
     @JsonProperty("id")
     private long id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("nickname")
+    private String nickname;
+
+    @JsonProperty("balance")
+    private double balance;
+
+    @JsonProperty("cardNumber")
+    private String cardNumber;
 
     public long getId() {
         return id;
@@ -18,11 +24,28 @@ public class UserDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
 }
