@@ -29,7 +29,7 @@ public class PartyInteractorImpl implements PartyInteractor {
         party.setName(name);
         try {
             party = partyRepository.saveAndFlush(party);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             LOGGER.error("exception: ", e);
             return Result.fail();
         }
@@ -45,4 +45,11 @@ public class PartyInteractorImpl implements PartyInteractor {
     public Result<Void> removeParticipant(long participantId, long partyId) {
         return null;
     }
+
+    @Override
+    public Result<Party> getParty(long id) {
+        Optional<Party> party = partyRepository.findById(id);
+        return party.map(Result::success).orElseGet(Result::fail);
+    }
+
 }

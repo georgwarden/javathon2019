@@ -11,4 +11,7 @@ public interface PartyInteractor {
      Result<Void> addParticipant(long participantId, long partyId);
 
      Result<Void> removeParticipant(long participantId, long partyId);
+
+     Result<Party> getParty(long id);
+
 }
