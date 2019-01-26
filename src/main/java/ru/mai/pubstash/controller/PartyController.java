@@ -35,18 +35,7 @@ public class PartyController {
                             () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                     );
         });
-    public Mono<ResponseEntity> createParty(@RequestBody CreatePartyRequest request) {
-        Party party = new Party();
-        party.setName(request.getPartyName());
-        party.setDescription(request.getDescription());
-        return Mono.fromCallable(() ->
-                partyInteractor.createParty(party)
-                        .fold(
-                                (v) -> ResponseEntity.ok().build(),
-                                ()  -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
-                        ));
     }
-
     @PostMapping("/add_participant")
     public Mono<ResponseEntity> addParticipant(@RequestBody AddParticipantRequest request) {
         return Mono.fromCallable(() ->
