@@ -1,7 +1,9 @@
 package ru.mai.pubstash.interactor;
 
+import org.springframework.stereotype.Component;
 import ru.mai.pubstash.util.Result;
 
+@Component
 public class PartyInteractor {
 
     public Result<Void> createParty(String name) {
