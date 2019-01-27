@@ -34,7 +34,7 @@ public class UserInteractorImpl implements UserInteractor {
 
     @Override
     public Result<User> findUserByNickname(@NotNull String nickname) {
-        Preconditions.checkArgument(nickname.isEmpty());
+        Preconditions.checkArgument(!nickname.isEmpty());
         return Result.retrieve(() -> userRepository.findUserByNickname(nickname));
     }
 
