@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.util.annotation.NonNull;
+import ru.mai.pubstash.entity.Item;
 import ru.mai.pubstash.entity.Member;
 import ru.mai.pubstash.entity.Party;
 import ru.mai.pubstash.entity.User;
@@ -76,6 +76,22 @@ public class PartyInteractorImpl implements PartyInteractor {
     public Result<Party> getParty(long id) {
         Optional<Party> party = partyRepository.findById(id);
         return party.map(Result::success).orElseGet(Result::fail);
+    }
+
+    @Override
+    public Result<Void> addItem(long partyId, String name, float cost) {
+        Optional<Party> party = partyRepository.findById(partyId);
+        if (party.isPresent()) {
+            Party actual = party.get();
+            Item newItem = new Item();
+            newItem.setName(name);
+            newItem.setCost(cost);
+            actual.getItems().add(newItem);
+            partyRepository.saveAndFlush(actual);
+            return Result.success(null);
+        } else {
+            return Result.fail();
+        }
     }
 
 }

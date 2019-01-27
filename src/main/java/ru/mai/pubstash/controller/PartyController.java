@@ -32,7 +32,7 @@ public class PartyController {
                 partyInteractor.createParty(party)
                         .fold(
                                 (v) -> ResponseEntity.ok().build(),
-                                ()  -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
+                                () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                         ));
     }
 
@@ -88,6 +88,20 @@ public class PartyController {
                             );
                             return ResponseEntity.ok(response);
                         },
+                        () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
+                )
+        );
+    }
+
+    @PostMapping("/add_item")
+    public Mono<ResponseEntity> addItem(@RequestBody AddItemRequest request) {
+        return Mono.fromCallable(() ->
+                partyInteractor.addItem(
+                        request.getPartyId(),
+                        request.getName(),
+                        request.getCost()
+                ).fold(
+                        (v) -> ResponseEntity.ok().build(),
                         () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                 )
         );
