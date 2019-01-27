@@ -27,6 +27,7 @@ public class Party {
     private List<Member> members;
 
     @OneToMany(mappedBy="party")
+    @OrderBy("id ASC")
     private List<Item> items;
 
     @OneToMany(mappedBy="party")

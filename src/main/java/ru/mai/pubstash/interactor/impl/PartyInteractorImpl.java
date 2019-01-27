@@ -1,6 +1,7 @@
 package ru.mai.pubstash.interactor.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Comparators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import ru.mai.pubstash.repository.PartyRepository;
 import ru.mai.pubstash.repository.UserRepository;
 import ru.mai.pubstash.util.Result;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PartyInteractorImpl implements PartyInteractor {
@@ -87,6 +90,26 @@ public class PartyInteractorImpl implements PartyInteractor {
             newItem.setName(name);
             newItem.setCost(cost);
             actual.getItems().add(newItem);
+            partyRepository.saveAndFlush(actual);
+            return Result.success(null);
+        } else {
+            return Result.fail();
+        }
+    }
+
+    @Override
+    public Result<Void> removeItem(long partyId, long itemId) {
+        Optional<Party> party = partyRepository.findById(partyId);
+        if (party.isPresent()) {
+            Party actual = party.get();
+            int index = Collections.binarySearch(
+                    actual.getItems()
+                            .stream()
+                            .map(Item::getId)
+                            .collect(Collectors.toList()),
+                    itemId,
+                    Long::compare);
+            actual.getItems().remove(index);
             partyRepository.saveAndFlush(actual);
             return Result.success(null);
         } else {

@@ -110,4 +110,15 @@ public class PartyController {
         );
     }
 
+    @PostMapping("/remove_item")
+    public Mono<ResponseEntity> removeItem(@RequestBody RemoveItemRequest request) {
+        return Mono.fromCallable(() ->
+                partyInteractor.removeItem(request.getPartyId(), request.getItemId())
+                        .fold(
+                                (v) -> ResponseEntity.ok().build(),
+                                () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
+                        )
+        );
+    }
+
 }

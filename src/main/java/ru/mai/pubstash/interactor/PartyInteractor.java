@@ -17,4 +17,6 @@ public interface PartyInteractor {
 
      Result<Void> addItem(long partyId, String name, float cost);
 
+     Result<Void> removeItem(long partyId, long itemId);
+
 }
