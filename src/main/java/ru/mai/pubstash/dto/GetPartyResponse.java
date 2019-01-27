@@ -12,6 +12,9 @@ public class GetPartyResponse {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("description")
+    private String description;
+
     @JsonProperty("members")
     private List<UserDto> members;
 
@@ -48,5 +51,13 @@ public class GetPartyResponse {
 
     public void setItems(List<ItemDto> items) {
         this.items = items;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
