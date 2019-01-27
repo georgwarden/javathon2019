@@ -31,7 +31,37 @@ public class PartyController {
             party.setDescription(request.getDescription());
             return partyInteractor.createParty(party)
                     .fold(
-                            (v) -> ResponseEntity.ok().build(),
+                            (part) -> {
+                                GetPartyResponse response = new GetPartyResponse();
+                                response.setId(part.getId());
+                                response.setName(part.getName());
+                                response.setDescription(part.getDescription());
+                                response.setMembers(
+                                        part.getMembers().stream()
+                                                .map(Member::getUser)
+                                                .map((user) -> {
+                                                    UserDto userDto = new UserDto();
+                                                    userDto.setId(user.getId());
+                                                    userDto.setNickname(user.getNickname());
+                                                    userDto.setCardNumber(user.getCardNumber().toString());
+                                                    userDto.setBalance(user.getBalance());
+                                                    return userDto;
+                                                })
+                                                .collect(Collectors.toList())
+                                );
+                                response.setItems(
+                                        part.getItems().stream()
+                                                .map((item) -> {
+                                                    ItemDto itemDto = new ItemDto();
+                                                    itemDto.setId(item.getId());
+                                                    itemDto.setName(item.getName());
+                                                    itemDto.setCost(item.getCost());
+                                                    return itemDto;
+                                                })
+                                                .collect(Collectors.toList())
+                                );
+                                return ResponseEntity.ok(response);
+                            },
                             () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                     );
         });

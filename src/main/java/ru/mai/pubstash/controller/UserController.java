@@ -44,7 +44,7 @@ public class UserController {
         });
     }
     @GetMapping("/getById")
-    public Mono<ResponseEntity<UserDto>> getProductsByPartnerId(@RequestParam(value = "Id") long  id) {
+    public Mono<ResponseEntity<UserDto>> getUserById(@RequestParam(value = "Id") long  id) {
         return Mono.fromCallable(() -> userInteractor.findUserById(id)
                 .fold(
                         (user) -> {
@@ -55,7 +55,7 @@ public class UserController {
         );
     }
     @GetMapping("/getByNickname")
-    public Mono<ResponseEntity<?>> getProductsByPartnerId(@RequestParam(value = "nickname") String nickname) {
+    public Mono<ResponseEntity<?>> getUserByNickname(@RequestParam(value = "nickname") String nickname) {
         if (nickname.isEmpty()) {
             return Mono.fromCallable(() -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(ErrorDto.create("Незаполнено поле nickname")));
         }

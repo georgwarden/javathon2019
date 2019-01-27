@@ -35,6 +35,9 @@ public class AuthController {
     public Mono<ResponseEntity> authenticateUser(@RequestBody SignInRequest signInRequest, HttpSession session) {
         return Mono.fromCallable(() -> userInteractor.findUserByNickname(signInRequest.getLogin()).fold(
                 (user) -> {
+                    if(user == null){
+                        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(ErrorDto.create("Пользователь не найден!"));
+                    }
                     if (user.getPassword().equals(signInRequest.getPassword())) {
                         UserUtils.saveUserToSession(session, user);
                         return ResponseEntity.ok(UserConverter.convertUserDto(user));
@@ -42,7 +45,7 @@ public class AuthController {
                         return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(ErrorDto.create("Неправильный пароль!"));
                     }
                 },
-                () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(ErrorDto.create("Пользователь не найден!"))
+                () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
         ));
 
     }
