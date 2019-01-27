@@ -24,7 +24,7 @@ public class PartyController {
     }
 
     @PostMapping("/create")
-    public Mono<ResponseEntity> createParty(CreatePartyRequest request) {
+    public Mono<ResponseEntity> createParty(@RequestBody CreatePartyRequest request) {
         return Mono.fromCallable(() -> {
             Party party = new Party();
             party.setName(request.getPartyName());
@@ -57,13 +57,14 @@ public class PartyController {
     }
 
     @GetMapping("/get_party")
-    public Mono<ResponseEntity<GetPartyResponse>> getParty(@RequestBody GetPartyRequest request) {
-        return Mono.fromCallable(() -> partyInteractor.getParty(request.getId())
+    public Mono<ResponseEntity<GetPartyResponse>> getParty(@RequestParam(value = "id")  long partyId) {
+        return Mono.fromCallable(() -> partyInteractor.getParty(partyId)
                 .fold(
                         (party) -> {
                             GetPartyResponse response = new GetPartyResponse();
                             response.setId(party.getId());
                             response.setName(party.getName());
+                            response.setDescription(party.getDescription());
                             response.setMembers(
                                     party.getMembers().stream()
                                             .map(Member::getUser)
