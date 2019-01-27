@@ -19,6 +19,9 @@ public class User {
     @Column(name = "NICKNAME", length=100, nullable = false, unique = true)
     private String nickname;
 
+    @Column(name = "PASSWORD", length=100, nullable = false)
+    private String password;
+
     @OneToMany(mappedBy="user")
     private List<Member> members;
 
@@ -80,5 +83,13 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, nickname);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

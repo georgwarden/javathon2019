@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.mai.pubstash.dto.*;
+import ru.mai.pubstash.dto.converters.UserConverter;
 import ru.mai.pubstash.entity.Member;
 import ru.mai.pubstash.entity.User;
 import ru.mai.pubstash.interactor.UserInteractor;
@@ -47,12 +48,7 @@ public class UserController {
         return Mono.fromCallable(() -> userInteractor.findUserById(id)
                 .fold(
                         (user) -> {
-                            UserDto userDto = new UserDto();
-                            userDto.setId(user.getId());
-                            userDto.setNickname(user.getNickname());
-                            userDto.setBalance(user.getBalance());
-                            userDto.setCardNumber(user.getCardNumber().toString());
-                            return ResponseEntity.ok(userDto);
+                            return ResponseEntity.ok(UserConverter.convertUserDto(user));
                         },
                         () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                 )
@@ -66,12 +62,7 @@ public class UserController {
         return Mono.fromCallable(() -> userInteractor.findUserByNickname(nickname)
                 .fold(
                         (user) -> {
-                            UserDto userDto = new UserDto();
-                            userDto.setId(user.getId());
-                            userDto.setNickname(user.getNickname());
-                            userDto.setBalance(user.getBalance());
-                            userDto.setCardNumber(user.getCardNumber().toString());
-                            return ResponseEntity.ok(userDto);
+                            return ResponseEntity.ok(UserConverter.convertUserDto(user));
                         },
                         () -> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build()
                 )
